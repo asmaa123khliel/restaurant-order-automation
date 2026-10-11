@@ -1,0 +1,442 @@
+{
+  "name": "restaurant-order-automation.",
+  "nodes": [
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "756e33c1-3553-42d0-8e37-b89d0cba0cf5",
+              "name": "customer_name",
+              "value": "={{ $json['Write Your Name'] }}",
+              "type": "string"
+            },
+            {
+              "id": "9f01b086-6e80-4845-96ed-98d9cb4268aa",
+              "name": "=order",
+              "value": "={{ $json['Write Your Order'].join(', ') }}",
+              "type": "string"
+            },
+            {
+              "id": "06eaa864-26aa-492d-8184-f0477f18cfe3",
+              "name": "price",
+              "value": "={{ $json['Write Your Price'] }}",
+              "type": "string"
+            },
+            {
+              "id": "9efb857c-6c8a-47c3-82d9-0917dd97a5ab",
+              "name": "order_date",
+              "value": "={{ $now.toFormat('yyyy-MM-dd') }}",
+              "type": "string"
+            },
+            {
+              "id": "fa9a185d-40d6-4bd4-92d1-4c0e4dc6e04b",
+              "name": "order_time",
+              "value": "={{ $now.toFormat('hh:mm:ss a') }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        224,
+        0
+      ],
+      "id": "291b8f4f-0c43-4905-975e-72e33ce41fbe",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "e75b44f5-39e7-4d50-b743-cf97ecd789ea",
+              "leftValue": "={{ $json.customer_name }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "67e99e43-12e1-4858-80bf-ddbda803a267",
+              "leftValue": "={{ $json.order }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "cb5ce5aa-712b-4b56-be75-85efdce8cd58",
+              "leftValue": "={{ $json.price }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        448,
+        0
+      ],
+      "id": "a3ab83f6-17ef-470d-b238-a78512602c85",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "88d8884a-0d2d-4782-a9a2-327b05bfa05e",
+              "name": "booking_status",
+              "value": "ready_for_confirmation",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": "=",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        688,
+        -80
+      ],
+      "id": "bdfc909c-0e26-4562-a8ed-36295ad6575f",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "8317a938-195c-4e81-89c8-3168f0f96d0b",
+              "name": "booking_status",
+              "value": "empty",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        720,
+        96
+      ],
+      "id": "700e54f9-75d0-4ac2-ba71-ee2953422cce",
+      "name": "Edit Fields2"
+    },
+    {
+      "parameters": {
+        "formTitle": "Orders",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Write Your Name"
+            },
+            {
+              "fieldLabel": "=Write Your Order",
+              "fieldType": "=checkbox",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "Cheese Burger"
+                  },
+                  {
+                    "option": "Chicken Burger"
+                  },
+                  {
+                    "option": "Margherita Pizza"
+                  },
+                  {
+                    "option": "Pepperoni Pizza"
+                  },
+                  {
+                    "option": "Chicken Ranch Pizza"
+                  }
+                ]
+              }
+            },
+            {
+              "fieldLabel": "Write Your Price",
+              "fieldType": "number"
+            }
+          ]
+        },
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.6,
+      "position": [
+        0,
+        0
+      ],
+      "id": "849bec31-f095-4e30-a9af-9fe63a79f040",
+      "name": "On form submission",
+      "webhookId": "bd0ac001-84a3-4228-b57b-fb60b33ad817"
+    },
+    {
+      "parameters": {
+        "sendTo": "tasneemkaliel@gmail.com",
+        "subject": "=New Order From: {{ $json.Name }}",
+        "emailType": "text",
+        "message": "=The Order is: {{ $json.Order }}\n\nThank you.",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        1152,
+        -176
+      ],
+      "id": "cd38c9bb-0ba3-4e33-ac6d-7da2bceda7e5",
+      "name": "Send a message",
+      "webhookId": "a67576f8-92b9-4f08-8a24-ad15f4510ebc",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "WUwWGVfUyF4fG0Lv",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "asmaayasser123456878@gmail.com",
+        "subject": "⚠️  فورم غير مكتملة - برجاء إعادة الإرسال",
+        "emailType": "text",
+        "message": "تنبيه! المحاولة الأخيرة لإدخال الطلب فشلت لأن بعض الحقول كانت فارغة (مثل اسم العميل أو الأوردر أو السعر). برجاء مراجعة الفورم وإدخال البيانات كاملاً بشكل صحيح.",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        944,
+        96
+      ],
+      "id": "f6622fd9-4022-4409-85ae-7b658cc04110",
+      "name": "Send a message1",
+      "webhookId": "16d30821-768b-4732-8ec4-9694f638dd1a",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "WUwWGVfUyF4fG0Lv",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1BYwm9klnn4DrKyx7HS5VifM6kN_2SzwGVgi5kbKG9G8",
+          "mode": "list",
+          "cachedResultName": "Orders_System",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BYwm9klnn4DrKyx7HS5VifM6kN_2SzwGVgi5kbKG9G8/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "الورقة1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BYwm9klnn4DrKyx7HS5VifM6kN_2SzwGVgi5kbKG9G8/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Name": "={{ $('Edit Fields').item.json.customer_name }}",
+            "Order": "={{ $('Edit Fields').item.json.order }}",
+            "Price": "={{ $('Edit Fields').item.json.price }}",
+            "Date": "={{ $('Edit Fields').item.json.order_date }}",
+            "Time": "={{ $('Edit Fields').item.json.order_time }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Order",
+              "displayName": "Order",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Price",
+              "displayName": "Price",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Date",
+              "displayName": "Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Time",
+              "displayName": "Time",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        912,
+        -80
+      ],
+      "id": "c703cdf9-0080-4f6d-ae15-0e92a209a036",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "dTdWsaaoKdzlZyql",
+          "name": "Google Sheets account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Edit Fields2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields2": {
+      "main": [
+        [
+          {
+            "node": "Send a message1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "timeSavedMode": "fixed",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": true
+  },
+  "versionId": "55dfef45-2c6f-456e-9fbf-c63ea85ef656",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "2f66702a2542d6354aa67ed72279e870ab3aa1c1ad8afad3286818c03fa8b219"
+  },
+  "nodeGroups": [],
+  "id": "KxUGQ6yFqwqPvEOv",
+  "tags": []
+}
