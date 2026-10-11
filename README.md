@@ -8,7 +8,7 @@ Inspired by the Krusty Krab from *SpongeBob*: the cashier takes the order, the c
 
 ## 📌 Workflow Overview
 
-![Workflow](images/workflow.png)
+![Workflow](images/workflow.PNG)
 
 | # | Node | Type | Purpose |
 |---|------|------|---------|
@@ -50,13 +50,13 @@ So selecting several items produces a clean value like `Cheese Burger, Pepperoni
 ## 📸 Results
 
 ### ✅ Successful order: email to the kitchen
-![Order email](images/order-email.png)
+![Order email](images/order-email.PNG)
 
 ### ❌ Incomplete form: alert email
-![Alert email](images/alert-email.png)
+![Alert email](images/alert-email.PNG)
 
 ### 📊 Google Sheets log
-![Google Sheet](images/google-sheet.png)
+![Google Sheet](images/google-sheet.PNG)
 
 The sheet contains these columns: `Name` | `Order` | `Price` | `Date` | `Time`
 
